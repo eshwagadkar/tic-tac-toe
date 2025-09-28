@@ -1,14 +1,17 @@
-import Player from './Player'
-
+import Player from './components/Player'
+import GameBoard from './components/GameBoard'
 function App() {
   return (
     <main>
       <div id="game-container">
+        {/* Players Board  */}
         <ol id="players">
           <Player name='Player 1' symbol='X' />
           <Player name='Player 2' symbol='O' />
         </ol>
-        GAME BOARD
+        {/* Game Board */}
+        <GameBoard />
+
       </div>
     </main>
   )
