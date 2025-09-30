@@ -4,22 +4,31 @@ import Player from './components/Player'
 import GameBoard from './components/GameBoard'
 import Log from './components/Log'
 
+// Helper class created outside the App component so that it doesnot gets recreated everytime.
+function deriveActivePlayer(gameTurns) { // BELOW CODE makes sure THAT WE ARE NOT MERGING DIFFERENT STATES.
+   let currentPlayer = 'X' 
+    
+   if(gameTurns.length > 0 && gameTurns[0].player === 'X') {
+      currentPlayer = 'O'
+    }
+
+    return currentPlayer 
+}
+
 function App() {
 
-  const [activePlayer, setActivePlayer] = useState('X')
+  // const [activePlayer, setActivePlayer] = useState('X')
   const [gameTurns, setGameTurns] = useState([])
 
+  const activePlayer = deriveActivePlayer(gameTurns)
+
+  // Receives the row index and column index and update the state based on previous state of the Game board.
   function handleSelectSquare(rowIndex, colIndex) {
-    setActivePlayer(currentActivePlayer => currentActivePlayer === 'X' ? 'O' : 'X')
-    
+    // setActivePlayer(currentActivePlayer => currentActivePlayer === 'X' ? 'O' : 'X')
+
     setGameTurns(prevTurns => {
 
-      // BELOW CODE makes sure THAT WE ARE NOT MERGING DIFFERENT STATES.
-      let currentPlayer = 'X' 
-      if(prevTurns.length > 0 && prevTurns[0].player === 'X') {
-        currentPlayer = 'O'
-      }
-
+      const currentPlayer = deriveActivePlayer(prevTurns)
       // Below array will return an aray of turns and the the current player who played the turn
       const updatedTurns = [
         { square : { row: rowIndex, col: colIndex }, player: currentPlayer  },
