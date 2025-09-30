@@ -42,6 +42,7 @@ function App() {
         {/* Game Board */}
         <GameBoard onSelectSquare={handleSelectSquare} turns={gameTurns}/>
       </div>
+      <Log turns={gameTurns}/>
     </main>
   )
 }
