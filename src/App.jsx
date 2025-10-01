@@ -5,10 +5,10 @@ import GameBoard from './components/GameBoard'
 import Log from './components/Log'
 
 // Helper class created outside the App component so that it doesnot gets recreated everytime.
-function deriveActivePlayer(gameTurns) { // BELOW CODE makes sure THAT WE ARE NOT MERGING DIFFERENT STATES.
+function deriveActivePlayer(turns) { // BELOW CODE makes sure THAT WE ARE NOT MERGING DIFFERENT STATES.
    let currentPlayer = 'X' 
     
-   if(gameTurns.length > 0 && gameTurns[0].player === 'X') {
+   if(turns.length > 0 && turns[0].player === 'X') {
       currentPlayer = 'O'
     }
 
