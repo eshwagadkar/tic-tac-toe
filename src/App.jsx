@@ -25,7 +25,11 @@ function deriveActivePlayer(turns) { // BELOW CODE makes sure THAT WE ARE NOT ME
 
 function App() {
 
-  // const [activePlayer, setActivePlayer] = useState('X')
+  const [players, setPlayers] = useState({
+    'X' : 'Player 1',
+    'O' : 'Player 2'
+  })
+
   const [gameTurns, setGameTurns] = useState([])
 
   const activePlayer = deriveActivePlayer(gameTurns)
@@ -48,7 +52,7 @@ function App() {
     const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].column]
   
     if(firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol) {
-         winner = firstSquareSymbol
+         winner = players[firstSquareSymbol]
     }
   }
 
@@ -56,10 +60,8 @@ function App() {
 
   // Receives the row index and column index and update the state based on previous state of the Game board.
   function handleSelectSquare(rowIndex, colIndex) {
-    // setActivePlayer(currentActivePlayer => currentActivePlayer === 'X' ? 'O' : 'X')
 
     setGameTurns(prevTurns => {
-
       const currentPlayer = deriveActivePlayer(prevTurns)
       // Below array will return an aray of turns and the the current player who played the turn
       const updatedTurns = [
@@ -75,6 +77,16 @@ function App() {
   function handleRestart() {
     setGameTurns([])
   }
+
+
+  function handlePlayerNameChange(symbol, newName) {
+    setPlayers(prevPlayers => {
+      return {
+        ...prevPlayers,
+        [symbol]: newName
+      }
+    })
+  }
   
   return <>
      <header>
@@ -85,8 +97,16 @@ function App() {
       <div id="game-container">
         {/* Players Board  */}
         <ol id="players" className='highlight-player'>
-          <Player name='Player 1' symbol='X' isActive={activePlayer === 'X'} />
-          <Player name='Player 2' symbol='O' isActive={activePlayer === 'O'} />
+          <Player 
+            name='Player 1' 
+            symbol='X' 
+            isActive={activePlayer === 'X'}
+            onChangeName={handlePlayerNameChange} />
+          <Player 
+            name='Player 2' 
+            symbol='O'
+            isActive={activePlayer === 'O'} 
+            onChangeName={handlePlayerNameChange}/>
         </ol>
         { (winner || hasDraw) && <GameOver winner={winner} onRestart={handleRestart}/>}
         {/* Game Board */}
