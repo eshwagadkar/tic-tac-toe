@@ -4,7 +4,7 @@ import Player from './components/Player'
 import GameBoard from './components/GameBoard'
 import Log from './components/Log'
 import { WINNING_COMBINATIONS } from './WINNIG_COMBINATIONS'
-
+import GameOver from './components/GameOver'
 const initialGameBoard = [
     [null, null, null],
     [null, null, null],
@@ -50,6 +50,8 @@ function App() {
     }
   }
 
+  const hasDraw = gameTurns.length === 9 && !winner
+
   // Receives the row index and column index and update the state based on previous state of the Game board.
   function handleSelectSquare(rowIndex, colIndex) {
     // setActivePlayer(currentActivePlayer => currentActivePlayer === 'X' ? 'O' : 'X')
@@ -80,7 +82,7 @@ function App() {
           <Player name='Player 1' symbol='X' isActive={activePlayer === 'X'} />
           <Player name='Player 2' symbol='O' isActive={activePlayer === 'O'} />
         </ol>
-        { winner && <p>You won!</p>}
+        { (winner || hasDraw) && <GameOver winner={winner} />}
         {/* Game Board */}
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard}/>
       </div>
