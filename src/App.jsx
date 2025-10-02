@@ -3,6 +3,13 @@ import { useState } from 'react'
 import Player from './components/Player'
 import GameBoard from './components/GameBoard'
 import Log from './components/Log'
+import { WINNING_COMBINATIONS } from './WINNIG_COMBINATIONS'
+
+const initialGameBoard = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+]
 
 // Helper class created outside the App component so that it doesnot gets recreated everytime.
 function deriveActivePlayer(turns) { // BELOW CODE makes sure THAT WE ARE NOT MERGING DIFFERENT STATES.
@@ -22,6 +29,27 @@ function App() {
 
   const activePlayer = deriveActivePlayer(gameTurns)
 
+  const gameBoard = initialGameBoard
+    
+  for(const turn of gameTurns) {
+      const { square, player } = turn
+      const { row, col } = square
+      gameBoard[row][col] = player
+  }
+
+  let winner; 
+
+  for(const combination of WINNING_COMBINATIONS) {
+
+    const firstSquareSymbol = gameBoard[combination[0].row][combination[0].column]
+    const secondSquareSymbol = gameBoard[combination[1].row][combination[1].column]
+    const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].column]
+  
+    if(firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol) {
+         winner = firstSquareSymbol
+    }
+  }
+
   // Receives the row index and column index and update the state based on previous state of the Game board.
   function handleSelectSquare(rowIndex, colIndex) {
     // setActivePlayer(currentActivePlayer => currentActivePlayer === 'X' ? 'O' : 'X')
@@ -40,7 +68,11 @@ function App() {
     })
   }
   
-  return (
+  return <>
+     <header>
+      <img src="game-logo.png" alt="logo-image" />
+      <h1>Tic-Tac-Toe</h1>
+    </header>
     <main>
       <div id="game-container">
         {/* Players Board  */}
@@ -48,12 +80,13 @@ function App() {
           <Player name='Player 1' symbol='X' isActive={activePlayer === 'X'} />
           <Player name='Player 2' symbol='O' isActive={activePlayer === 'O'} />
         </ol>
+        { winner && <p>You won!</p>}
         {/* Game Board */}
-        <GameBoard onSelectSquare={handleSelectSquare} turns={gameTurns}/>
+        <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard}/>
       </div>
       <Log turns={gameTurns}/>
     </main>
-  )
+  </>
 }
 
 export default App
